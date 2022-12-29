@@ -596,10 +596,10 @@ class CameraState:
                 continue
 
             self.object_counts[obj_name] = 0
-            for c in self.callbacks["object_status"]:
-                c(self.name, obj_name, 0)
             for c in self.callbacks["snapshot"]:
                 c(self.name, self.best_objects[obj_name], frame_time)
+            for c in self.callbacks["object_status"]:
+                c(self.name, obj_name, 0)
 
         # cleanup thumbnail frame cache
         current_thumb_frames = {
@@ -754,8 +754,8 @@ class TrackedObjectProcessor(threading.Thread):
             camera_state.on("start", start)
             camera_state.on("update", update)
             camera_state.on("end", end)
-            camera_state.on("snapshot", snapshot)
             camera_state.on("object_status", object_status)
+            camera_state.on("snapshot", snapshot)
             self.camera_states[camera] = camera_state
 
         # {
